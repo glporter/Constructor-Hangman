@@ -33,6 +33,7 @@ var aWordArrayIndex = 0;
 function Game() {
     this.currentWordIndex = 1;
     this.wins = 0;
+    this.losses = 0;
     this.correctLetters = "";
     this.guessesRemaining = 0;
     this.lettersAlreadyGuessed = [""];
@@ -69,6 +70,17 @@ function Game() {
     this.getNextWord = function() {
         this.currentWordIndex++;
     }; //end function getNextWord
+
+
+    this.wordGuessed = function() {
+        if (this.dashArray.includes("_")) {
+            this.losses++;
+            console.log("***** User didn't guess the word ******");
+        } else {
+            this.wins++;
+            console.log("***** User successfully guessed the word ********");
+        }
+    }
 
 } //end  Game construction function
 
@@ -113,7 +125,8 @@ var askQuestion = function() {
         // else statement which prints "all questions asked" to the console
         // when the code has been run five times
     } else {
-        console.log("All questions asked");
+        console.log("All letters guessed");
+        newGame.wordGuessed();
     }
 };
 

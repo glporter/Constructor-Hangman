@@ -1,0 +1,21 @@
+const readline = require('readline');
+
+/*
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+*/
+
+console.log('THIS IS A TEST.');
+console.log('THIS IS A TEST.');
+console.log('THIS IS A TEST.');
+console.log('THIS IS A TEST.');
+console.log('THIS IS A TEST.');
+
+
+setTimeout(() => {
+  readline.cursorTo(process.stdout, 0, 0);
+  readline.clearScreenDown(process.stdout);
+  console.log('THIS SHOULD OVERWRITE WHAT WAS ON THE SCREEN BEFORE.');
+}, 2000);

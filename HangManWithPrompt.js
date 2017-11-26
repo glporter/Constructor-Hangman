@@ -22,7 +22,12 @@ var aWordArray = ["aardvark",
     "snowmobile",
     "elephant",
     "dinosaur",
-    "programmer"
+    "programmer",
+    "algorithm",
+    "pseudocode",
+    "prototype",
+    "template",
+    "giraffe"
 ];
 
 var count = 0;
@@ -31,7 +36,7 @@ var aWordArrayIndex = 0;
 
 // constructor function used to create Game objects
 function Game() {
-    this.currentWordIndex = 1;
+    this.currentWordIndex = 0;
     this.wins = 0;
     this.losses = 0;
     this.correctLetters = "";
@@ -48,6 +53,7 @@ function Game() {
             //check if the letter entered is contained in the word
             if (aWord[index] === letterEntered) {
                 // a character match was found	
+                this.correctLetters++;
                 this.dashArray[index] = letterEntered.trim();
                 console.log(this.dashArray);
             } //else {
@@ -80,9 +86,16 @@ function Game() {
             this.wins++;
             console.log("***** User successfully guessed the word ********");
         }
-    }
+    }; //end function wordGuessed
 
-} //end  Game construction function
+
+    this.setWordArrayIndex = function() {
+        this.currentWordIndex = Math.floor(Math.random() * 9) + 0;
+        //console.log("SetWordArrayIndex: " + this.currentWordIndex);
+    }; //end function setWordArrayIndex
+
+}; //end  Game construction function
+
 
 
 // creates the printInfo method and applies it to all programmer objects
@@ -93,8 +106,11 @@ Game.prototype.printInfo = function() {
 
 
 var newGame = new Game();
+newGame.setWordArrayIndex();
 newGame.buildDashArray();
+console.log("CurrentWordIndex: " + newGame.currentWordIndex);
 var wordlength = aWordArray[newGame.currentWordIndex].length;
+newGame.guessesRemaining = wordLength;
 console.log("Word Length: " + wordlength);
 
 // variable we will use to count how many times our questions have been asked
@@ -116,9 +132,10 @@ var askQuestion = function() {
             letterEntered = answers.name;
             newGame.checkWordArray();
             // printInfo method is run to show that the newguy object was successfully created and filled
-            newGame.printInfo();
+            //newGame.printInfo();
             // add one to count to increment our recursive loop by one
             count++;
+            newGame.guessesRemaining--;
             // run the askquestion function again so as to either end the loop or ask the questions again
             askQuestion();
         });
@@ -127,6 +144,7 @@ var askQuestion = function() {
     } else {
         console.log("All letters guessed");
         newGame.wordGuessed();
+        newGame.printInfo();
     }
 };
 

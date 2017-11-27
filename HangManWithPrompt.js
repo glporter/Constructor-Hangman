@@ -31,7 +31,7 @@ var aWordArray = ["aardvark",
 ];
 
 //var count = 0;
-var letterEntered = "";
+//var letterEntered = "";
 
 
 // constructor function used to create Game objects
@@ -44,6 +44,7 @@ function Game() {
     this.guessesRemaining = 0;
     this.lettersAlreadyGuessed = [""];
     this.dashArray = [""];
+    this.letterEntered = "";
 
     this.resetGame = function() {
             this.currentWordIndex = 0;
@@ -54,6 +55,7 @@ function Game() {
             this.guessesRemaining = 0;
             this.lettersAlreadyGuessed = [""];
             this.dashArray = [""];
+            this.letterEntered = "";
             //set a random index value to index the word array
             this.setWordArrayIndex();
             //build the dashes array
@@ -67,10 +69,10 @@ function Game() {
         console.log("The word to guess is: " + aWord);
         for (var index = 0; index < currentWordLength; index++) {
             //check if the letter entered is contained in the word
-            if (aWord[index] === letterEntered) {
+            if (aWord[index] === this.letterEntered) {
                 // a character match was found	
                 this.correctLetters++;
-                this.dashArray[index] = letterEntered.trim();
+                this.dashArray[index] = this.letterEntered.trim();
                 console.log(this.dashArray);
             } //else {
             //  this.dashArray[index] = '_';
@@ -135,7 +137,7 @@ var count = 0;
 
 var askQuestion = function() {
     // if statement to ensure that our questions are only asked five times
-    if (count < newGame.currentWordLength) {
+    if (count < newGame.currentWordLength + 1) {
         // runs inquirer and asks the user a series of questions whose replies are
         // stored within the variable answers inside of the .then statement
         inquirer.prompt([{
@@ -146,7 +148,7 @@ var askQuestion = function() {
             // in all of the user's answers to the questions above
 
             newGame.lettersAlreadyGuessed.push(answers.name);
-            letterEntered = answers.name;
+            newGame.letterEntered = answers.name;
             newGame.checkWordArray();
             // printInfo method is run to show that the newguy object was successfully created and filled
             //newGame.printInfo();

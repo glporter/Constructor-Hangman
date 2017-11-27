@@ -30,13 +30,14 @@ var aWordArray = ["aardvark",
     "giraffe"
 ];
 
-var count = 0;
+//var count = 0;
 var letterEntered = "";
-var aWordArrayIndex = 0;
+
 
 // constructor function used to create Game objects
 function Game() {
     this.currentWordIndex = 0;
+    this.currentWordLength = 0;
     this.wins = 0;
     this.losses = 0;
     this.correctLetters = "";
@@ -44,12 +45,27 @@ function Game() {
     this.lettersAlreadyGuessed = [""];
     this.dashArray = [""];
 
+    this.resetGame = function() {
+            this.currentWordIndex = 0;
+            this.currentWordLength = 0;
+            this.wins = 0;
+            this.losses = 0;
+            this.correctLetters = "";
+            this.guessesRemaining = 0;
+            this.lettersAlreadyGuessed = [""];
+            this.dashArray = [""];
+            //set a random index value to index the word array
+            this.setWordArrayIndex();
+            //build the dashes array
+            this.buildDashArray();
+        } //end function resetGame
+
     this.checkWordArray = function() {
         var aWord = aWordArray[this.currentWordIndex];
         //var aWord = aWordArray[0];
-        wordLength = aWord.length;
+        currentWordLength = aWord.length;
         console.log("The word to guess is: " + aWord);
-        for (var index = 0; index < wordLength; index++) {
+        for (var index = 0; index < currentWordLength; index++) {
             //check if the letter entered is contained in the word
             if (aWord[index] === letterEntered) {
                 // a character match was found	
@@ -66,8 +82,8 @@ function Game() {
 
     this.buildDashArray = function() {
         aWordToGuess = aWordArray[this.currentWordIndex];
-        wordLength = aWordToGuess.length;
-        for (var index = 0; index < wordLength - 1; index++) {
+        currentWordLength = aWordToGuess.length;
+        for (var index = 0; index < currentWordLength - 1; index++) {
             this.dashArray.push("_");
         }
         console.log(this.dashArray);
@@ -109,16 +125,17 @@ var newGame = new Game();
 newGame.setWordArrayIndex();
 newGame.buildDashArray();
 console.log("CurrentWordIndex: " + newGame.currentWordIndex);
-var wordlength = aWordArray[newGame.currentWordIndex].length;
-newGame.guessesRemaining = wordLength;
-console.log("Word Length: " + wordlength);
+//*****var currentWordLength = aWordArray[newGame.currentWordIndex].length;
+newGame.currentWordLength = aWordArray[newGame.currentWordIndex].length;
+newGame.guessesRemaining = newGame.currentWordLength;
+console.log("Word Length: " + newGame.currentWordLength);
 
 // variable we will use to count how many times our questions have been asked
 var count = 0;
 
 var askQuestion = function() {
     // if statement to ensure that our questions are only asked five times
-    if (count < wordlength) {
+    if (count < newGame.currentWordLength) {
         // runs inquirer and asks the user a series of questions whose replies are
         // stored within the variable answers inside of the .then statement
         inquirer.prompt([{
@@ -145,6 +162,33 @@ var askQuestion = function() {
         console.log("All letters guessed");
         newGame.wordGuessed();
         newGame.printInfo();
+        //sdfdsfsdf
+        inquirer.prompt([{
+            type: "confirm",
+            name: "confirm",
+            message: "Wish to play game again???",
+            default: true
+        }]).then(function(inquirerResponse) {
+            if (inquirerResponse.confirm) {
+                //var newGame = new Game();
+                // newGame.setWordArrayIndex();
+                //newGame.buildDashArray();
+                newGame.resetGame()
+                newGame.currentWordLength = aWordArray[newGame.currentWordIndex].length;
+                newGame.guessesRemaining = newGame.currentWordLength;
+                newGame.guessesRemaining = currentWordLength;
+                console.log("Word Index: " + newGame.currentWordIndex);
+                console.log("Word Length after -- Play game again???: " + currentWordLength);
+
+                // variable we will use to count how many times our questions have been asked
+                count = 0;
+                askQuestion();
+            } else {
+                console.log("\nThank you for playing. Have a great day!!!!\n");
+            }
+
+        });
+
     }
 };
 
